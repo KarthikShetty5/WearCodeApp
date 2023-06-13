@@ -16,53 +16,53 @@ import { useGetProductsQuery } from '../store/apiSlice';
 const ProductsScreen = ({ navigation }) => {
   // const navigation = useNavigation();
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const { data, isLoading, error } = useGetProductsQuery();
+  const { data, isLoading, error } = useGetProductsQuery();
+  console.group(error)
 
-  // if (isLoading) {
-  //   return <ActivityIndicator />;
-  // }
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
 
-  // if (error) {
-  //   return <Text>Error fetching products: {error.error}</Text>;
-  // }
+  if (error) {
+    return <Text>Error fetching products: {error.error}</Text>;
+  }
 
-  // const products = data.data;
+  const products = data.data;
 
   return (
-    <FlatList
-      // first property is data , what datau want to render in our case srray of products
-      data={products}
-      //  second property is how to u want to render one item from this array
-      renderItem={({ item }) => (
-        <Pressable onPress={() => navigation.navigate('Product Details')} style={styles.itemContainer}>
-          <Image source={{ uri: item.image }}
-            style={styles.image}
-          />
-        </Pressable>
-      )}
-      numColumns={2} //number of columns u want images to be in
-    />
-
-
     // <FlatList
+    //   // first property is data , what datau want to render in our case srray of products
     //   data={products}
+    //   //  second property is how to u want to render one item from this array
     //   renderItem={({ item }) => (
-    //     <Pressable
-    //       onPress={() => {
-    //         // update selected product
-    //         // dispatch(productsSlice.actions.setSelectedProduct(item.id));
-
-    //         navigation.navigate('Product Details', { id: item._id });
-    //       }}
-    //       style={styles.itemContainer}
-    //     >
-    //       <Image source={{ uri: item.image }} style={styles.image} />
+    //     <Pressable onPress={() => navigation.navigate('Product Details')} style={styles.itemContainer}>
+    //       <Image source={{ uri: item.image }}
+    //         style={styles.image}
+    //       />
     //     </Pressable>
     //   )}
-    //   numColumns={2}
+    //   numColumns={2} //number of columns u want images to be in
     // />
+
+    <FlatList
+      data={products}
+      renderItem={({ item }) => (
+        <Pressable
+          onPress={() => {
+            // update selected product
+            // dispatch(productsSlice.actions.setSelectedProduct(item.id));
+
+            navigation.navigate('Product Details', { id: item._id });
+          }}
+          style={styles.itemContainer}
+        >
+          <Image source={{ uri: item.image }} style={styles.image} />
+        </Pressable>
+      )}
+      numColumns={2}
+    />
   );
 };
 

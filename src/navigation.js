@@ -10,6 +10,7 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { selectNumberOfItems } from './store/cartSlice';
 import TrackOrder from './screens/TrackOrder';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,10 +22,37 @@ const Navigation = () => {
       {/* root component */}
       <Stack.Navigator
         screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
-        // it sets color to view that renders item
+      // it sets color to view that renders item
       >
+        <Stack.Screen name="WearCode"
+          component={HomeScreen}
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <Pressable
+                onPress={() => navigation.navigate('Cart')}
+                style={{ flexDirection: 'row' }}
+              >
+                <FontAwesome5 name="shopping-cart" size={18} color="gray" />
+                <Text style={{ marginLeft: 5, fontWeight: '500' }}>
+                  {numberOfItems}
+                </Text>
+              </Pressable>
+            ),
+            // headerLeft: () => (
+            //   <MaterialCommunityIcons
+            //     onPress={() => navigation.navigate('Track Order')}
+            //     name="truck-delivery"
+            //     size={22}
+            //     color="gray"
+            //   />
+            // ),
+          })}
+
+        />
+
+
         <Stack.Screen
-          name="WearCode"
+          name="ProductScreen"
           component={ProductsScreen}
           options={({ navigation }) => ({
             headerRight: () => (

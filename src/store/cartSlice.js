@@ -17,9 +17,9 @@ export const cartSlice = createSlice({
         (item) => item.product._id === newProduct._id
       );
       if (cartItem) {
-        cartItem.quantity += 1;
+        cartItem.quantity += 1; //if its there we increase the qty
       } else {
-        state.items.push({ product: newProduct, quantity: 1 });
+        state.items.push({ product: newProduct, quantity: 1 }); //if we dnt find we just increase it by 1
       }
     },
     changeQuantity: (state, action) => {
@@ -31,7 +31,7 @@ export const cartSlice = createSlice({
         cartItem.quantity += amount;
       }
 
-      if (cartItem.quantity <= 0) {
+      if (cartItem.quantity <= 0) { //if cart goes below 0
         state.items = state.items.filter((item) => item !== cartItem);
       }
     },

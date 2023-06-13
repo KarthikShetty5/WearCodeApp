@@ -15,29 +15,31 @@ import { cartSlice } from '../store/cartSlice';
 import { useGetProductQuery } from '../store/apiSlice';
 
 const ProductDetailsScreen = ({ route }) => {
-  // const id = route.params.id;
+  const id = route.params.id;
 
-  // const { data, isLoading, error } = useGetProductQuery(id);
-  // const product = data?.data;
+  const { data, isLoading, error } = useGetProductQuery(id);
+  console.log(data)
+  
+  const product = data?.data;
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const { width } = useWindowDimensions();
-  // //it takes size of screen and send it to window
+  //it takes size of screen and send it to window
 
   const addToCart = () => {
-    // dispatch(cartSlice.actions.addCartItem({ product }));
-    console.warn("added to cart")
+    dispatch(cartSlice.actions.addCartItem({ product }));
+    // console.warn("added to cart")
   };
 
-  // if (isLoading) {
-  //   return <ActivityIndicator />;
-  // }
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
 
-  // if (error) {
-  //   return <Text>Error fetching the product. {error.error}</Text>;
-  // }
-  const product = products[0]
+  if (error) {
+    return <Text>Error fetching the product. {error.error}</Text>;
+  }
+  // const product = products[0]
   return (
     <View>
       <ScrollView>

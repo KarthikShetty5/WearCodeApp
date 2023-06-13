@@ -6,6 +6,7 @@ import { apiSlice } from './apiSlice';
 export const store = configureStore({
   reducer: {
     products: productsSlice.reducer,
+    //take all the reducers from productslice and attach to reducer products here
     cart: cartSlice.reducer,
     api: apiSlice.reducer,
   },
