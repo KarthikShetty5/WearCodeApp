@@ -15,11 +15,11 @@ import { cartSlice } from '../store/cartSlice';
 import { useGetProductQuery } from '../store/apiSlice';
 
 const ProductDetailsScreen = ({ route }) => {
-  const id = route.params.id;
+  const id = route.params.id ;
 
   const { data, isLoading, error } = useGetProductQuery(id);
   console.log(data)
-  
+
   const product = data?.data;
 
   const dispatch = useDispatch();
@@ -67,11 +67,17 @@ const ProductDetailsScreen = ({ route }) => {
         </View>
       </ScrollView>
 
-      {/* Add to cart button */}
-      <Pressable onPress={addToCart} style={styles.button}>
-        {/* it handles press events */}
-        <Text style={styles.buttonText}>Add to cart</Text>
-      </Pressable>
+      <View style={styles.buttons}>
+        {/* Add to cart button */}
+        <Pressable onPress={addToCart} style={styles.button1}>
+          {/* it handles press events */}
+          <Text style={styles.buttonText}>Add to cart</Text>
+        </Pressable>
+        <Pressable onPress={addToCart} style={styles.button1}>
+          {/* it handles press events */}
+          <Text style={styles.buttonText}>Buy Now</Text>
+        </Pressable>
+      </View>
 
       {/* Navigation icon */}
     </View>
@@ -94,23 +100,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 30,
     fontWeight: '300',
+    paddingBottom:40,
   },
 
-  button: {
-    position: 'absolute',
+  button1: {
     backgroundColor: 'black',
     bottom: 30,
-    width: '90%',
+    width: '45%',
     alignSelf: 'center',
-    padding: 20,
+    padding: 15,
     borderRadius: 100,
     alignItems: 'center',
+    marginRight: 8
   },
+  // button2: {
+  //   backgroundColor: 'black',
+  //   bottom: 30,
+  //   width: '30%',
+  //   alignSelf: 'center',
+  //   padding: 15,
+  //   borderRadius: 100,
+  //   alignItems: 'center',
+  //   marginLeft: 8
+  // },
   buttonText: {
     color: 'white',
     fontWeight: '500',
     fontSize: 16,
   },
+  buttons: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    bottom: 30,
+    SpaceBetween: 3
+  }
 });
 
 export default ProductDetailsScreen;

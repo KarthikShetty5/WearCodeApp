@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'http://192.168.112.81:3000/';
+const baseUrl = 'http://192.168.225.168:3000/';
 //i found this IPv4 address by running ipconfig in command line
 
 export const apiSlice = createApi({

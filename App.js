@@ -5,8 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from './src/store';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
-const STRIPE_KEY =
-  'pk_test_51MhWh3KFBbgW0VClMkCwptwPtXFBm3F8cYTSTy2FfORjqlbmDnVChl6VTevEm5wGLpCkirGN4GmJT4TShFrqO8KD00zH60RQoD';
+const STRIPE_KEY = 'pk_test_51N8jx1SAkzcwTJBgOtORZc0zxRENB3J78IrHPdVbGNQHOYKKAO5hdxmZt2rMTemPiYgSYUqMvLKHn6RvsZnRSO9Z00XqNGR4b6';
 
 export default function App() {
   return (

@@ -70,7 +70,7 @@ const ShoppingCart = () => {
 
     // 2. Initialize the Payment sheet
     const initResponse = await initPaymentSheet({
-      merchantDisplayName: 'notJust.dev',
+      merchantDisplayName: 'WearCode',
       paymentIntentClientSecret: response.data.paymentIntent,
     });
     if (initResponse.error) {

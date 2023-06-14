@@ -11,6 +11,9 @@ import { useSelector } from 'react-redux';
 import { selectNumberOfItems } from './store/cartSlice';
 import TrackOrder from './screens/TrackOrder';
 import HomeScreen from './screens/HomeScreen';
+import Tshirt from './screens/Tshirt';
+import Checkout from './screens/Checkout';
+import ProfilePage from './screens/ProfilePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,10 +52,8 @@ const Navigation = () => {
           })}
 
         />
-
-
         <Stack.Screen
-          name="ProductScreen"
+          name="Shoes"
           component={ProductsScreen}
           options={({ navigation }) => ({
             headerRight: () => (
@@ -66,14 +67,14 @@ const Navigation = () => {
                 </Text>
               </Pressable>
             ),
-            headerLeft: () => (
-              <MaterialCommunityIcons
-                onPress={() => navigation.navigate('Track Order')}
-                name="truck-delivery"
-                size={22}
-                color="gray"
-              />
-            ),
+            // headerLeft: () => (
+            //   <MaterialCommunityIcons
+            //     onPress={() => navigation.navigate('Track Order')}
+            //     name="truck-delivery"
+            //     size={22}
+            //     color="gray"
+            //   />
+            // ),
 
           })}
         />
@@ -85,6 +86,10 @@ const Navigation = () => {
         />
         <Stack.Screen name="Cart" component={ShoppingCart} />
         <Stack.Screen name="Track Order" component={TrackOrder} />
+        <Stack.Screen name="Tshirt" component={Tshirt} />
+        <Stack.Screen name="Hoodies" component={Checkout} />
+        <Stack.Screen name="Profile" component={ProfilePage} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
