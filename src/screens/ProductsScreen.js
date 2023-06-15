@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import products from '../data/products'
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   StyleSheet,
   Text,
@@ -59,6 +60,11 @@ const ProductsScreen = ({ navigation }) => {
           style={styles.itemContainer}
         >
           <Image source={{ uri: item.image }} style={styles.image} />
+          <View style={styles.container}>
+            <Text>{item.name}</Text>
+            <FontAwesome5 name="heart" size={15} color="gray" style={{paddingLeft:90}}/>
+          </View>
+            <Text style={{paddingLeft:10,paddingBottom:5}}>₹ {item.price}</Text>
         </Pressable>
       )}
       numColumns={2}
@@ -76,6 +82,14 @@ const styles = StyleSheet.create({
     // if we want to render it as a square give aspecr ratio,height will be calaculated based on width as aspect ratio is 1
     aspectRatio: 1,
   }
+  ,
+  container: {
+    padding: 10,
+    paddingBottom:0,
+    // paddingHorizontal: 20,
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
 });
 
 export default ProductsScreen;

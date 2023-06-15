@@ -13,9 +13,11 @@ import products from '../data/products';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartSlice } from '../store/cartSlice';
 import { useGetProductQuery } from '../store/apiSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const ProductDetailsScreen = ({ route }) => {
-  const id = route.params.id ;
+  const id = route.params.id;
+  const navigation = useNavigation();
 
   const { data, isLoading, error } = useGetProductQuery(id);
   console.log(data)
@@ -26,6 +28,7 @@ const ProductDetailsScreen = ({ route }) => {
 
   const { width } = useWindowDimensions();
   //it takes size of screen and send it to window
+
 
   const addToCart = () => {
     dispatch(cartSlice.actions.addCartItem({ product }));
@@ -73,7 +76,7 @@ const ProductDetailsScreen = ({ route }) => {
           {/* it handles press events */}
           <Text style={styles.buttonText}>Add to cart</Text>
         </Pressable>
-        <Pressable onPress={addToCart} style={styles.button1}>
+        <Pressable onPress={() => { navigation.navigate("Checkout", { id: id }) }} style={styles.button1}>
           {/* it handles press events */}
           <Text style={styles.buttonText}>Buy Now</Text>
         </Pressable>
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 30,
     fontWeight: '300',
-    paddingBottom:40,
+    paddingBottom: 40,
   },
 
   button1: {

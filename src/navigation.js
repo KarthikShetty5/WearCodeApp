@@ -14,6 +14,8 @@ import HomeScreen from './screens/HomeScreen';
 import Tshirt from './screens/Tshirt';
 import Checkout from './screens/Checkout';
 import ProfilePage from './screens/ProfilePage';
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
 
 const Stack = createNativeStackNavigator();
 
@@ -87,9 +89,10 @@ const Navigation = () => {
         <Stack.Screen name="Cart" component={ShoppingCart} />
         <Stack.Screen name="Track Order" component={TrackOrder} />
         <Stack.Screen name="Tshirt" component={Tshirt} />
-        <Stack.Screen name="Hoodies" component={Checkout} />
+        <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="Profile" component={ProfilePage} />
-
+        <Stack.Screen name="Hoodies" component={Login} />
+        <Stack.Screen name="Stickers" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

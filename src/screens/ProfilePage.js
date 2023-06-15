@@ -1,7 +1,31 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, Pressable } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfilePage = () => {
+    const navigation = useNavigation();
+    const [value, setValue] = useState('WelCome !!');
+    const getter = async () => {
+        try {
+            val = await AsyncStorage.getItem('email')
+                .then(val => {
+                    if (val != null) {
+                        setValue(val)
+                    }
+                })
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    getter();
+
+    const logout = async () => {
+        await AsyncStorage.removeItem('email')
+        Alert.alert("Logged out")
+        navigation.navigate("WearCode")
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
@@ -9,7 +33,7 @@ const ProfilePage = () => {
                     source={{ uri: 'https://th.bing.com/th?id=OIP.Gfp0lwE6h7139625a-r3aAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2' }}
                     style={styles.profilePicture}
                 />
-                <Text style={styles.profileName}>John Doe</Text>
+                <Text style={styles.profileName}>{value}</Text>
             </View>
             <TouchableOpacity style={styles.profileSection}>
                 <Text style={styles.sectionTitle}>Orders</Text>
@@ -27,7 +51,7 @@ const ProfilePage = () => {
                 <Text style={styles.sectionTitle}>Settings</Text>
                 <Text style={styles.sectionSubtitle}>Manage your account settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileSection}>
+            <TouchableOpacity style={styles.profileSection} onPress={() => { logout() }} >
                 <Text style={styles.sectionTitle}>Logout</Text>
             </TouchableOpacity>
         </View>
