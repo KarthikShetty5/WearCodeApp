@@ -14,7 +14,7 @@ import BottomNavi from '../components/BottomNavi';
 const TrackOrder = () => {
   const [ref, setRef] = useState('');
   const { data, isLoading, error } = useGetOrderQuery(ref);
-  // da = orders.items[0].product
+  da = data?.data.items[0].product
 
   return (
     <>
@@ -25,11 +25,16 @@ const TrackOrder = () => {
           onChangeText={setRef}
           placeholder="Your order reference"
         />
+        {/* <Text style={{ paddingBottom: 30 }}>{JSON.stringify(data.data, null, 2)}</Text> */}
 
         {isLoading && <ActivityIndicator />}
         {data?.status !== 'OK' && <Text>Order not found</Text>}
         {data?.status === 'OK' && (
-          <Text>{JSON.stringify(data.data, null, 2)}</Text>
+          <>
+            < Image source={{ uri: da?.image }} style={styles.image} />
+            <Text>{da.name}</Text>
+            <Text>{da.price}</Text>
+          </>
         )}
       </ScrollView>
       <BottomNavi />
@@ -68,6 +73,7 @@ const styles = StyleSheet.create({
   image: {
     width: '40%',
     aspectRatio: 1,
+    margin: 15
   },
   name: {
     fontWeight: '500',

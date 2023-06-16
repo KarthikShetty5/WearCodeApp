@@ -20,6 +20,7 @@ const ProductsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const { data, isLoading, error } = useGetProductsQuery();
+  // console.log(data.data)
   console.group(error)
 
   if (isLoading) {

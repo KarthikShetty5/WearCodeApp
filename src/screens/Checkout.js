@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native'
 import { View, Text } from 'react-native'
 import { useGetProductQuery } from '../store/apiSlice'
@@ -9,14 +9,129 @@ import { FlatList } from 'react-native'
 import CartListItem from '../components/CartListItem'
 import { Pressable } from 'react-native'
 import { ScrollView } from 'react-native'
+import { cartSlice } from '../store/cartSlice';
+import { useCreateOrderMutation, useCreatePaymentIntentMutation } from '../store/apiSlice';
+import { useStripe } from '@stripe/stripe-react-native';
+import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
+
+
 
 const Checkout = ({ route }) => {
+    const navigation = useNavigation();
+    const [tok, setTok] = useState();
+    // const get = async () => {
+    //     try {
+    //         val = await AsyncStorage.getItem('email')
+    //             .then((val) => {
+    //                 setTok(val);
+    //             }
+    //             )
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     get();
+    //     console.log(!tok)
+    //     if (!tok) {
+    //         navigation.navigate("Login")
+    //     }
+    // }, [])
+
+
+
+    const dispatch = useDispatch();
     const [ref, setRef] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [city, setCity] = useState('');
+    const [pincode, setPincode] = useState('')
+    const [state, setState] = useState('')
     const id = route.params.id;
     const { data, isLoading, error } = useGetProductQuery(id);
     const product = data?.data;
+    const deliveryFee = 80
+    const subtotal = 1000
 
-    console.log(product)
+    //  payment Gateway
+    let total = product.price
+    const [createOrder, { data1, error1, isLoading1 }] = useCreateOrderMutation();
+    const [createPaymentIntent] = useCreatePaymentIntentMutation();
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+    const onCheckout = async () => {
+        // 1. Create a payment intent
+        const response = await createPaymentIntent({
+            amount: Math.floor(total * 100),
+        });
+        if (response.error) {
+            Alert.alert('Something went wrong');
+            return;
+        }
+        // 2. Initialize the Payment sheet
+        const initResponse = await initPaymentSheet({
+            merchantDisplayName: 'WearCode',
+            paymentIntentClientSecret: response.data.paymentIntent,
+        });
+        if (initResponse.error) {
+            console.log(initResponse.error);
+            Alert.alert('Something went wrong');
+            return;
+        }
+        // 3. Present the Payment Sheet from Stripe
+        const paymentResponse = await presentPaymentSheet();
+
+        if (paymentResponse.error) {
+            Alert.alert(
+                `Error code: ${paymentResponse.error.code}`,
+                paymentResponse.error.message
+            );
+            return;
+        }
+
+        // 4. If payment ok -> create the order
+        onCreateOrder();
+    };
+
+    const onCreateOrder = async () => {
+        const result = await createOrder({
+            items: product,
+            subtotal,
+            deliveryFee,
+            total,
+            customer: {
+                name: name,
+                email: email,
+                pincode: pincode,
+                address: address,
+                phone: phone,
+                city: city,
+                state: state,
+            },
+        });
+
+        if (result.data?.status === 'OK') {
+            Alert.alert(
+                'Order has been submitted',
+                `Your order reference is: ${result.data.data.ref}`
+            );
+            dispatch(cartSlice.actions.clear());
+            setName('');
+            setEmail('');
+            setAddress('');
+            setPhone('');
+            setCity('');
+            setState('');
+            setPincode('')
+        }
+    };
+
+
     return (
         <>
             <ScrollView>
@@ -25,48 +140,48 @@ const Checkout = ({ route }) => {
                     <View style={styles.container}>
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={name}
+                            onChangeText={(text) => setName(text)}
                             placeholder="Name"
                         />
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={email}
+                            onChangeText={(email) => setEmail(email)}
                             placeholder="Email"
                         />
                     </View>
                     <TextInput
                         style={styles.input}
-                        value={ref}
-                        onChangeText={setRef}
+                        value={address}
+                        onChangeText={(text) => setAddress(text)}
                         placeholder="Address"
                     />
                     <View style={styles.container}>
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={phone}
+                            onChangeText={(phone) => setPhone(phone)}
                             placeholder="Phone"
                         />
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={pincode}
+                            onChangeText={(pincode) => setPincode(pincode)}
                             placeholder="PinCode"
                         />
                     </View>
                     <View style={styles.container}>
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={state}
+                            onChangeText={(state) => setState(state)}
                             placeholder="State"
                         />
                         <TextInput
                             style={styles.input1}
-                            value={ref}
-                            onChangeText={setRef}
+                            value={city}
+                            onChangeText={(text) => setCity(text)}
                             placeholder="City"
                         />
                     </View>
@@ -80,9 +195,10 @@ const Checkout = ({ route }) => {
                     </View>
                 </View>
             </ScrollView>
-            <Pressable onPress={() => console.log("buy now")} style={styles.button}>
+            <Pressable onPress={() => { onCheckout() }} style={styles.button}>
                 <Text style={styles.buttonText}>
                     Place Order
+                    {isLoading && <ActivityIndicator />}
                 </Text>
             </Pressable>
         </>

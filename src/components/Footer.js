@@ -1,15 +1,20 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { Pressable } from 'react-native';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
 const Footer = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image
-                    source={{ uri: 'https://th.bing.com/th?id=OIP.DCgfEJDZZDka6j0wAAPFrAHaEK&w=333&h=187&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2' }}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
+                <Pressable onPress={() => { navigation.navigate("WearCode") }}>
+                    <Image
+                        source={require('../../assets/playstore3.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
+                </Pressable>
             </View>
             <Text style={styles.text}>&copy; 2023 Your eCommerce Website. All rights reserved.</Text>
             <Text style={styles.text}>Return Policy | Terms of Service | Privacy Policy</Text>
@@ -30,7 +35,7 @@ const Footer = () => {
                     resizeMode="contain"
                 />
                 <Image
-                    source={{ uri:'https://th.bing.com/th/id/OIP.TQkOkUCjNbd_NTUKFq-9QAHaCB?w=299&h=95&c=7&r=0&o=5&dpr=1.3&pid=1.7'}}
+                    source={{ uri: 'https://th.bing.com/th/id/OIP.TQkOkUCjNbd_NTUKFq-9QAHaCB?w=299&h=95&c=7&r=0&o=5&dpr=1.3&pid=1.7' }}
                     style={styles.paymentLogo}
                     resizeMode="contain"
                 />
@@ -43,14 +48,14 @@ const Footer = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#f1f1f1',
-        paddingVertical: 10,
+        paddingBottom: 8,
         paddingHorizontal: 20,
         borderTopWidth: 1,
         borderTopColor: '#ccc',
     },
     logoContainer: {
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 2,
     },
     logo: {
         width: 150,

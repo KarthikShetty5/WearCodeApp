@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, Pressable, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useGetUserQuery } from '../store/apiSlice';
+
 
 const ProfilePage = () => {
     const navigation = useNavigation();
-    const [value, setValue] = useState('WelCome !!');
+    const [value, setValue] = useState('L1@')
     const getter = async () => {
         try {
             val = await AsyncStorage.getItem('email')
@@ -18,10 +20,20 @@ const ProfilePage = () => {
             console.error(err)
         }
     }
-    getter();
+
+    useEffect(() => {
+        getter();
+    }, [])
+
+    const { data, isLoading, error } = useGetUserQuery(value);
+
+    // console.log(value)
+    // console.log(data?.data)
+
+    // console.error(error)
 
     const logout = async () => {
-        await AsyncStorage.removeItem('email')
+        await AsyncStorage.removeItem('token')
         Alert.alert("Logged out")
         navigation.navigate("WearCode")
     }
@@ -33,13 +45,13 @@ const ProfilePage = () => {
                     source={{ uri: 'https://th.bing.com/th?id=OIP.Gfp0lwE6h7139625a-r3aAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2' }}
                     style={styles.profilePicture}
                 />
-                <Text style={styles.profileName}>{value}</Text>
+                <Text style={styles.profileName}>{(data?.data.name) ? (data?.data.name) : "Unknown"} {isLoading && <ActivityIndicator />}</Text>
             </View>
-            <TouchableOpacity style={styles.profileSection}>
-                <Text style={styles.sectionTitle}>Orders</Text>
+            <TouchableOpacity style={styles.profileSection} onPress={() => { navigation.navigate("Login") }}>
+                <Text style={styles.sectionTitle}>Login</Text>
                 <Text style={styles.sectionSubtitle}>View your order history</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileSection}>
+            <TouchableOpacity style={styles.profileSection} onPress={() => { navigation.navigate("Myaccount") }}>
                 <Text style={styles.sectionTitle}>Account</Text>
                 <Text style={styles.sectionSubtitle}>Change password and other details</Text>
             </TouchableOpacity>
