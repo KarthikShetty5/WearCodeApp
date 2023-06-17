@@ -40,8 +40,6 @@ const ProductDetailsScreen = ({ route }) => {
   ];
 
 
-
-
   const [value, setValue] = useState(0);
   const [pin, setPin] = useState('')
   // const sheet = React.useRef();
@@ -109,13 +107,13 @@ const ProductDetailsScreen = ({ route }) => {
 
           {/* size selector */}
           <View style={styles.group}>
-            {size.map((item, index) => {
-              const isActive = value === index;
+            {product.sizes.map((item) => {
+              const isActive = value === item;
               return (
                 <View key={item}>
                   <TouchableWithoutFeedback
                     onPress={() => {
-                      setValue(index);
+                      setValue(item);
                     }}>
                     <View
                       style={[
@@ -138,7 +136,7 @@ const ProductDetailsScreen = ({ route }) => {
               {/* it handles press events */}
               <Text style={styles.buttonText}>Add to cart</Text>
             </Pressable>
-            <Pressable onPress={() => { navigation.navigate("Checkout", { id: id }) }} style={styles.button1}>
+            <Pressable onPress={() => { navigation.navigate("Checkout", { id: id, size: value }) }} style={styles.button1}>
               {/* it handles press events */}
               <Text style={styles.buttonText}>Buy Now</Text>
             </Pressable>

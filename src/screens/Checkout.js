@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native'
 
 
 
+
 const Checkout = ({ route }) => {
     const navigation = useNavigation();
     const [tok, setTok] = useState();
@@ -53,6 +54,7 @@ const Checkout = ({ route }) => {
     const [pincode, setPincode] = useState('')
     const [state, setState] = useState('')
     const id = route.params.id;
+    const size = route.params.size
     const { data, isLoading, error } = useGetProductQuery(id);
     const product = data?.data;
     const deliveryFee = 80
@@ -100,7 +102,18 @@ const Checkout = ({ route }) => {
 
     const onCreateOrder = async () => {
         const result = await createOrder({
-            items: product,
+            items: {
+                0: { //i have done this to compromise my shopping cart 
+                    product: {
+                        "id": product._id,
+                        "image": product.image,
+                        "price": product.price,
+                        "name": product.name,
+                        "description": product.description,
+                        "size": size
+                    }
+                }
+            },
             subtotal,
             deliveryFee,
             total,
@@ -130,7 +143,6 @@ const Checkout = ({ route }) => {
             setPincode('')
         }
     };
-
 
     return (
         <>
@@ -192,12 +204,13 @@ const Checkout = ({ route }) => {
                         <Text style={{ paddingLeft: 20 }}>{product.name}</Text>
                         <Image source={{ uri: product.image }} style={{ width: 70, aspectRatio: 1 }} />
                         <Text>{product.price}</Text>
+                        <Text>{size}</Text>
                     </View>
                 </View>
             </ScrollView>
-            <Pressable onPress={() => { onCheckout() }} style={styles.button}>
+            <Pressable onPress={() => { onCheckout() }} style={styles.button} disabled={(name && phone && email && address) ? false : true}>
                 <Text style={styles.buttonText}>
-                    Place Order
+                    {(name && phone && email && address) ? "Place Order" : "Fill Details"}
                     {isLoading && <ActivityIndicator />}
                 </Text>
             </Pressable>
@@ -267,7 +280,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingTop: 20,
-        gap: 70
+        gap: 50
     },
     image: {
         width: '40%',

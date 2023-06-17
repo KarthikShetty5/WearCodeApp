@@ -12,7 +12,6 @@ const Login = () => {
     const { data, isLoading, error } = useGetUserQuery(email);
     const user = data?.data;
     // console.log(data?.data.email, data?.data.token)
-
     const submit = async () => {
         if (email === user?.email) {
             if (password === user.password) {

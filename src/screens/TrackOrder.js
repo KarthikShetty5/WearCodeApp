@@ -32,8 +32,8 @@ const TrackOrder = () => {
         {data?.status === 'OK' && (
           <>
             < Image source={{ uri: da?.image }} style={styles.image} />
-            <Text>{da.name}</Text>
-            <Text>{da.price}</Text>
+            <Text>{da?.name}</Text>
+            <Text>{da?.price}</Text>
           </>
         )}
       </ScrollView>

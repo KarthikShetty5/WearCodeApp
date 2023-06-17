@@ -36,6 +36,7 @@ const TshirtScreen = ({ navigation }) => {
             if (item.category == "tshirt") {
                 tshirt.push({
                     "id": item._id,
+                    "name": item.name,
                     "image": item.image,
                     "price": item.price
                 })
@@ -52,6 +53,9 @@ const TshirtScreen = ({ navigation }) => {
                 renderItem={({ item }) => (
                     <Pressable
                         onPress={() => {
+                            // update selected product
+                            // dispatch(productsSlice.actions.setSelectedProduct(item.id));
+
                             navigation.navigate('Product Details', { id: item.id });
                         }}
                         style={styles.itemContainer}
@@ -59,9 +63,9 @@ const TshirtScreen = ({ navigation }) => {
                         <Image source={{ uri: item.image }} style={styles.image} />
                         <View style={styles.container}>
                             <Text>{item.name}</Text>
-                            <FontAwesome5 name="heart" size={15} color="gray" style={{ paddingLeft: 155 }} />
+                            <FontAwesome5 name="heart" size={15} color="gray" style={{ paddingLeft: 90 }} />
                         </View>
-                        <Text style={{ paddingLeft: 10, paddingBottom: 10 }}>₹ {item.price}</Text>
+                        <Text style={{ paddingLeft: 10, paddingBottom: 5 }}>₹ {item.price}</Text>
                     </Pressable>
                 )}
                 numColumns={2}
@@ -77,15 +81,16 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '100%',
+        // if we want to render it as a square give aspecr ratio,height will be calaculated based on width as aspect ratio is 1
         aspectRatio: 1,
     }
     ,
     container: {
         padding: 10,
         paddingBottom: 0,
+        // paddingHorizontal: 20,
         alignItems: 'center',
         flexDirection: 'row'
     },
 });
-
 export default TshirtScreen;

@@ -7,7 +7,7 @@ import { useGetUserQuery } from '../store/apiSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const MyAccount = () => {
-    // const [ref, setRef] = useState(''); 
+    const [value, setValue] = useState('')
     const getter = async () => {
         try {
             val = await AsyncStorage.getItem('email')
@@ -24,7 +24,7 @@ const MyAccount = () => {
     useEffect(() => {
         getter();
     }, [])
-
+   
     const { data, isLoading, error } = useGetUserQuery(value);
     const user = data?.data;
 
@@ -35,9 +35,7 @@ const MyAccount = () => {
     const [city, setCity] = useState('');
     const [pincode, setPincode] = useState('')
     const [state, setState] = useState('')
-    const [value, setValue] = useState('')
     const [password, setPassword] = useState('')
-
 
     return (
         <>

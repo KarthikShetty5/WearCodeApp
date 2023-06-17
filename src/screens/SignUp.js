@@ -12,13 +12,13 @@ const SignUp = () => {
     const [createUser, { data, error, isLoading }] = useCreateUserMutation();
 
     const submit = async () => {
-        let token = (Math.random() + 1).toString(36).substring(7)
+        let tok = (Math.random() + 1).toString(36).substring(7)
         const result = await createUser({
             name: name,
+            token: tok,
             email: email,
             password: password,
             phone: phone,
-            token: token
         });
         console.log(result);
         if (result.data?.status === 'OK') {

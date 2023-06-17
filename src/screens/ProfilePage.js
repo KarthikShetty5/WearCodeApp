@@ -7,7 +7,7 @@ import { useGetUserQuery } from '../store/apiSlice';
 
 const ProfilePage = () => {
     const navigation = useNavigation();
-    const [value, setValue] = useState('L1@')
+    const [value, setValue] = useState('')
     const getter = async () => {
         try {
             val = await AsyncStorage.getItem('email')
@@ -33,9 +33,13 @@ const ProfilePage = () => {
     // console.error(error)
 
     const logout = async () => {
-        await AsyncStorage.removeItem('token')
-        Alert.alert("Logged out")
-        navigation.navigate("WearCode")
+        try {
+            await AsyncStorage.removeItem('email')
+            Alert.alert("Logged out")
+            navigation.navigate("WearCode")
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (
