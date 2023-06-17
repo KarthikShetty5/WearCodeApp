@@ -5,6 +5,7 @@ import { TextInput } from 'react-native'
 import { View, Text } from 'react-native'
 import { useGetUserQuery } from '../store/apiSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ActivityIndicator } from 'react-native'
 
 const MyAccount = () => {
     const [value, setValue] = useState('')
@@ -24,11 +25,11 @@ const MyAccount = () => {
     useEffect(() => {
         getter();
     }, [])
-   
-    const { data, isLoading, error } = useGetUserQuery(value);
+
+    const { data, isLoading, error } = useGetUserQuery({ email: value });
     const user = data?.data;
 
-    const [name, setName] = useState("");
+    const [name, setName] = useState(user?.name);
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -41,7 +42,7 @@ const MyAccount = () => {
         <>
             <ScrollView>
                 <View style={styles.container2}>
-                    <Text style={styles.text}>My Account</Text>
+                    <Text style={styles.text}>My Account {isLoading && <ActivityIndicator />}</Text>
                     <View style={styles.container}>
                         <TextInput
                             style={styles.input1}

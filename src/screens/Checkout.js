@@ -21,7 +21,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Checkout = ({ route }) => {
     const navigation = useNavigation();
-    const [tok, setTok] = useState();
+    const [tok, setTok] = useState('');
     // const get = async () => {
     //     try {
     //         val = await AsyncStorage.getItem('email')
@@ -36,8 +36,8 @@ const Checkout = ({ route }) => {
 
     // useEffect(() => {
     //     get();
-    //     console.log(!tok)
-    //     if (!tok) {
+    //     console.log(tok)
+    //     if (tok == undefined) {
     //         navigation.navigate("Login")
     //     }
     // }, [])
@@ -59,6 +59,7 @@ const Checkout = ({ route }) => {
     const product = data?.data;
     const deliveryFee = 80
     const subtotal = 1000
+    
 
     //  payment Gateway
     let total = product.price
@@ -173,12 +174,16 @@ const Checkout = ({ route }) => {
                         <TextInput
                             style={styles.input1}
                             value={phone}
+                            keyboardType='numeric'
+                            maxLength={10}
                             onChangeText={(phone) => setPhone(phone)}
                             placeholder="Phone"
                         />
                         <TextInput
                             style={styles.input1}
                             value={pincode}
+                            keyboardType='numeric'
+                            maxLength={6}
                             onChangeText={(pincode) => setPincode(pincode)}
                             placeholder="PinCode"
                         />

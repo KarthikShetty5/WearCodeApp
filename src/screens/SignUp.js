@@ -48,6 +48,8 @@ const SignUp = () => {
                     style={styles.input}
                     placeholder="Phone"
                     secureTextEntry
+                    keyboardType='numeric'
+                    maxLength={10}
                     onChangeText={(text) => setPhone(text)}
                     value={phone}
                 />

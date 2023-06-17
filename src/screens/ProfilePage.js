@@ -21,11 +21,11 @@ const ProfilePage = () => {
         }
     }
 
+    const { data, isLoading, error } = useGetUserQuery(value);
+
     useEffect(() => {
         getter();
     }, [])
-
-    const { data, isLoading, error } = useGetUserQuery(value);
 
     // console.log(value)
     // console.log(data?.data)
