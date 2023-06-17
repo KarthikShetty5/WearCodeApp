@@ -17,6 +17,8 @@ import ProfilePage from './screens/ProfilePage';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import MyAccount from './screens/MyAccount';
+import Hoodies from './screens/Hoodies';
+import Stickers from './screens/Stickers';
 
 const Stack = createNativeStackNavigator();
 
@@ -95,6 +97,8 @@ const Navigation = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Myaccount" component={MyAccount} />
+        <Stack.Screen name="Hoodies" component={Hoodies} />
+        <Stack.Screen name="Stickers" component={Stickers} />
       </Stack.Navigator>
     </NavigationContainer>
   );
