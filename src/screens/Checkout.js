@@ -71,7 +71,9 @@ const Checkout = ({ route }) => {
 
 
     //  payment Gateway
+    let delFee = 15;
     let total = product.price
+    let subt = total > 200 ? (total) : (total + delFee)
     const [createOrder, { data1, error1, isLoading1 }] = useCreateOrderMutation();
     const [createPaymentIntent] = useCreatePaymentIntentMutation();
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -123,8 +125,8 @@ const Checkout = ({ route }) => {
                 }, quantity: 1
             }
             ],
-            subtotal,
-            deliveryFee,
+            subtotal: subt,
+            deliveryFee: delFee,
             total,
             customer: {
                 name: name,
@@ -220,10 +222,10 @@ const Checkout = ({ route }) => {
                         <Text>{size}</Text>
                     </View>
                 </View>
-            </ScrollView>
+            </ScrollView>  
             <Pressable onPress={() => { onCheckout() }} style={styles.button} disabled={(name && phone && email && address) ? false : true}>
                 <Text style={styles.buttonText}>
-                    {(name && phone && email && address) ? "Place Order" : "Fill Details"}
+                    {(name && phone && email && address) ? `Pay ${subt}` : "Fill Details"}
                     {isLoading && <ActivityIndicator />}
                 </Text>
             </Pressable>

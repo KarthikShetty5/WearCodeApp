@@ -22,12 +22,14 @@ const MyAccount = () => {
         }
     }
 
+    const { data, isLoading, error } = useGetUserTokQuery(value);
+
     useEffect(() => {
         getter();
     }, [])
 
-    const { data, isLoading, error } = useGetUserTokQuery(value);
     const user = data?.data;
+    console.log(user?.token)
 
     const [name, setName] = useState(user?.name);
     const [address, setAddress] = useState('');
