@@ -19,6 +19,9 @@ import SignUp from './screens/SignUp';
 import MyAccount from './screens/MyAccount';
 import Hoodies from './screens/Hoodies';
 import Stickers from './screens/Stickers';
+import ContactScreen from './screens/ContactScreen';
+import { Image } from 'react-native';
+import ModalScreen from './screens/ModalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,9 +35,10 @@ const Navigation = () => {
         screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
       // it sets color to view that renders item
       >
-        <Stack.Screen name="WearCode"
-          component={HomeScreen}
+        <Stack.Screen
+          component={HomeScreen} name="WearCode" title=""
           options={({ navigation }) => ({
+            headerTitle: () => (null),
             headerRight: () => (
               <Pressable
                 onPress={() => navigation.navigate('Cart')}
@@ -46,14 +50,9 @@ const Navigation = () => {
                 </Text>
               </Pressable>
             ),
-            // headerLeft: () => (
-            //   <MaterialCommunityIcons
-            //     onPress={() => navigation.navigate('Track Order')}
-            //     name="truck-delivery"
-            //     size={22}
-            //     color="gray"
-            //   />
-            // ),
+            headerLeft: () => (
+              <Image source={require("../assets/playstore3.png")} style={{ width: 150, height: 50, resizeMode: "contain" }} />
+            ),
           })}
 
         />
@@ -99,6 +98,8 @@ const Navigation = () => {
         <Stack.Screen name="Myaccount" component={MyAccount} />
         <Stack.Screen name="Hoodies" component={Hoodies} />
         <Stack.Screen name="Stickers" component={Stickers} />
+        <Stack.Screen name="Contact" component={ContactScreen} />
+        <Stack.Screen name="app" component={ModalScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

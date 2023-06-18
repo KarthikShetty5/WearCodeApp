@@ -28,7 +28,9 @@ export const apiSlice = createApi({
     getUser: builder.query({
       query: (email) => `user/${email}`,
     }),
-    // Orders
+    getUserTok: builder.query({
+      query: (token) => `user/tok/${token}`,
+    }),
     createUser: builder.mutation({
       query: (newUser) => ({
         url: 'user',
@@ -54,5 +56,6 @@ export const {
   useCreateUserMutation,
   useGetOrderQuery,
   useGetUserQuery,
+  useGetUserTokQuery,
   useCreatePaymentIntentMutation
 } = apiSlice;

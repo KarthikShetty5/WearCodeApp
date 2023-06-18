@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Pressable, ScrollView, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native'
 import { View, Text } from 'react-native'
-import { useGetUserQuery } from '../store/apiSlice'
+import { useGetUserTokQuery } from '../store/apiSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ActivityIndicator } from 'react-native'
 
@@ -11,7 +11,7 @@ const MyAccount = () => {
     const [value, setValue] = useState('')
     const getter = async () => {
         try {
-            val = await AsyncStorage.getItem('email')
+            val = await AsyncStorage.getItem('token')
                 .then(val => {
                     if (val != null) {
                         setValue(val)
@@ -26,7 +26,7 @@ const MyAccount = () => {
         getter();
     }, [])
 
-    const { data, isLoading, error } = useGetUserQuery({ email: value });
+    const { data, isLoading, error } = useGetUserTokQuery(value);
     const user = data?.data;
 
     const [name, setName] = useState(user?.name);
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 5,
         marginRight: 5,
+        height: 80
     },
     button: {
         position: 'absolute',

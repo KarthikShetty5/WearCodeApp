@@ -9,6 +9,7 @@ import {
   Pressable,
   ActivityIndicator,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import products from '../data/products';
 import { useSelector, useDispatch } from 'react-redux';
@@ -121,7 +122,7 @@ const ProductDetailsScreen = ({ route }) => {
                         isActive && { borderColor: "black" },
                       ]}>
                       <Text
-                        style={[styles.circleInside, { backgroundColor: "gray" }]}
+                        style={[styles.circleInside, { backgroundColor: "pink" }]}
                       >{item}</Text>
                     </View>
                   </TouchableWithoutFeedback>
@@ -132,14 +133,14 @@ const ProductDetailsScreen = ({ route }) => {
 
           <View style={styles.buttons}>
             {/* Add to cart button */}
-            <Pressable onPress={addToCart} style={styles.button1}>
+            <TouchableOpacity onPress={addToCart} style={styles.button1}>
               {/* it handles press events */}
               <Text style={styles.buttonText}>Add to cart</Text>
-            </Pressable>
-            <Pressable onPress={() => { navigation.navigate("Checkout", { id: id, size: value }) }} style={styles.button1}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { navigation.navigate("Checkout", { id: id, size: value }) }} style={styles.button1}>
               {/* it handles press events */}
               <Text style={styles.buttonText}>Buy Now</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           {/* Pincode button */}
@@ -151,9 +152,9 @@ const ProductDetailsScreen = ({ route }) => {
               onChangeText={(text) => { setPin(text) }}
               value={pin}
             />
-            <Pressable onPress={() => { checkPin() }} style={styles.button}>
+            <TouchableOpacity onPress={() => { checkPin() }} style={styles.button}>
               <Text style={styles.buttonText}>Check</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           {/* Description */}
@@ -187,7 +188,9 @@ const styles = StyleSheet.create({
   },
 
   button1: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
+    borderColor: "black",
+    borderWidth: 2,
     bottom: 2,
     width: '45%',
     alignSelf: 'center',
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: '500',
     fontSize: 16,
   },
@@ -288,9 +291,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 18,
-    padding: 10,
-    borderColor: '#000',
-    backgroundColor: '#000',
+    padding: 9,
+    borderColor: 'black',
+    backgroundColor: 'white',
+    borderWidth: 1,
     marginBottom: 20,
   }
 });

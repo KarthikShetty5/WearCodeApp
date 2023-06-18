@@ -17,7 +17,7 @@ const Login = () => {
             if (password === user.password) {
                 console.log("success")
                 try {
-                    await AsyncStorage.setItem('email', user.email)
+                    await AsyncStorage.setItem('token', user.token)
                         .then(() => {
                             navigation.navigate("WearCode")
                         }

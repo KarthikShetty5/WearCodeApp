@@ -65,7 +65,7 @@ const TshirtScreen = ({ navigation }) => {
                             <Text>{item.name}</Text>
                             <FontAwesome5 name="heart" size={15} color="gray" style={{ paddingLeft: 90 }} />
                         </View>
-                        <Text style={{ paddingLeft: 10, paddingBottom: 5 }}>₹ {item.price}</Text>
+                        <Text style={{ paddingLeft: 10, paddingBottom: 5 }}>₹{item.price}</Text>
                     </Pressable>
                 )}
                 numColumns={2}

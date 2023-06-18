@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, Pressable, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { useGetUserQuery } from '../store/apiSlice';
+import { useGetUserTokQuery } from '../store/apiSlice';
 
 
 const ProfilePage = () => {
@@ -10,7 +10,7 @@ const ProfilePage = () => {
     const [value, setValue] = useState('')
     const getter = async () => {
         try {
-            val = await AsyncStorage.getItem('email')
+            val = await AsyncStorage.getItem('token')
                 .then(val => {
                     if (val != null) {
                         setValue(val)
@@ -21,7 +21,7 @@ const ProfilePage = () => {
         }
     }
 
-    const { data, isLoading, error } = useGetUserQuery(value);
+    const { data, isLoading, error } = useGetUserTokQuery(value);
 
     useEffect(() => {
         getter();
@@ -34,7 +34,7 @@ const ProfilePage = () => {
 
     const logout = async () => {
         try {
-            await AsyncStorage.removeItem('email')
+            await AsyncStorage.removeItem('token')
             Alert.alert("Logged out")
             navigation.navigate("WearCode")
         } catch (err) {
@@ -63,7 +63,7 @@ const ProfilePage = () => {
                 <Text style={styles.sectionTitle}>Wishlist</Text>
                 <Text style={styles.sectionSubtitle}>View your saved items</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileSection}>
+            <TouchableOpacity style={styles.profileSection} onPress={() => { navigation.navigate("Contact") }}>
                 <Text style={styles.sectionTitle}>Settings</Text>
                 <Text style={styles.sectionSubtitle}>Manage your account settings</Text>
             </TouchableOpacity>

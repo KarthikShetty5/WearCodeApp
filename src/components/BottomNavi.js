@@ -11,7 +11,7 @@ const BottomNavi = () => {
             <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate("WearCode")}>
                 <Icon name="home" size={20} color="#000" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.tabItem}>
+            <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate("app")}>
                 <Icon name="bars" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate("Profile")}>

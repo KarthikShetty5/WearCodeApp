@@ -57,8 +57,7 @@ const HomeScreen = () => {
                         );
                     }}
                 />
-                <Image source={{ uri: 'https://i.pinimg.com/originals/c2/85/7c/c2857c58c581091b67f7d5720d68acf3.png' }} style={{ width, aspectRatio: 1 }} />
-
+                <Image source={require("../../assets/image21.jpg")} style={{ width: "100%", height: 300 }} />
 
 
                 <View style={styles.container}>

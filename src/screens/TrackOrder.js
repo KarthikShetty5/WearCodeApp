@@ -25,15 +25,14 @@ const TrackOrder = () => {
           onChangeText={setRef}
           placeholder="Your order reference"
         />
-        {/* <Text style={{ paddingBottom: 30 }}>{JSON.stringify(data.data, null, 2)}</Text> */}
-
+        {/* <Text style={{ paddingBottom: 30 }}>{JSON.stringify(data?.data, null, 2)}</Text> */}
         {isLoading && <ActivityIndicator />}
         {data?.status !== 'OK' && <Text>Order not found</Text>}
         {data?.status === 'OK' && (
           <>
-            < Image source={{ uri: da?.image }} style={styles.image} />
-            <Text>{da?.name}</Text>
-            <Text>{da?.price}</Text>
+            <Image source={{ uri: da?.image }} style={styles.image} />
+            <Text>{da.name}</Text>
+            <Text>{da.price}</Text>
           </>
         )}
       </ScrollView>

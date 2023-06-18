@@ -21,28 +21,26 @@ import { useNavigation } from '@react-navigation/native'
 
 const Checkout = ({ route }) => {
     const navigation = useNavigation();
-    const [tok, setTok] = useState('');
-    // const get = async () => {
-    //     try {
-    //         val = await AsyncStorage.getItem('email')
-    //             .then((val) => {
-    //                 setTok(val);
-    //             }
-    //             )
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
+    // const [tok, setTok] = useState(null);
+    let value = null;
 
-    // useEffect(() => {
-    //     get();
-    //     console.log(tok)
-    //     if (tok == undefined) {
-    //         navigation.navigate("Login")
-    //     }
-    // }, [])
+    useEffect(() => {
+        get();
+    }, [])
 
-
+    const get = async () => {
+        try {
+            val = await AsyncStorage.getItem('token')
+            value = val
+            console.log(`${value} hello checkout`)
+            if (!value) {
+                navigation.navigate("Login")
+                console.log(`${value} hello login`)
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     const dispatch = useDispatch();
     const [ref, setRef] = useState('');
@@ -59,7 +57,7 @@ const Checkout = ({ route }) => {
     const product = data?.data;
     const deliveryFee = 80
     const subtotal = 1000
-    
+
 
     //  payment Gateway
     let total = product.price
