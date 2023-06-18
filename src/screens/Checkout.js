@@ -15,11 +15,13 @@ import { useStripe } from '@stripe/stripe-react-native';
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
+import pincode from '../../pincodes.json'
 
 
 
 
 const Checkout = ({ route }) => {
+    let pins = JSON.stringify(pincode)
     const navigation = useNavigation();
     // const [tok, setTok] = useState(null);
     let value = null;
@@ -41,6 +43,15 @@ const Checkout = ({ route }) => {
             console.error(err);
         }
     }
+
+    useEffect(() => {
+        let pin = "123456"
+        if (1) {
+            console.log("ye karthik", pins)
+        } else {
+            console.log("noooo")
+        }
+    }, [])
 
     const dispatch = useDispatch();
     const [ref, setRef] = useState('');

@@ -22,6 +22,7 @@ import Stickers from './screens/Stickers';
 import ContactScreen from './screens/ContactScreen';
 import { Image } from 'react-native';
 import ModalScreen from './screens/ModalScreen';
+import Forgot from './screens/Forgot';
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,7 @@ const Navigation = () => {
         <Stack.Screen name="Stickers" component={Stickers} />
         <Stack.Screen name="Contact" component={ContactScreen} />
         <Stack.Screen name="app" component={ModalScreen} />
+        <Stack.Screen name="forgot" component={Forgot} />
       </Stack.Navigator>
     </NavigationContainer>
   );
