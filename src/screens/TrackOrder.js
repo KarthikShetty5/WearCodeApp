@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import { useGetOrderQuery } from '../store/apiSlice';
 import BottomNavi from '../components/BottomNavi';
@@ -14,7 +15,9 @@ import BottomNavi from '../components/BottomNavi';
 const TrackOrder = () => {
   const [ref, setRef] = useState('');
   const { data, isLoading, error } = useGetOrderQuery(ref);
-  da = data?.data.items[0].product
+  da = data?.data.items
+  // let daa = data?.data
+  // console.log(daa.customer)
 
   return (
     <>
@@ -28,16 +31,24 @@ const TrackOrder = () => {
         {/* <Text style={{ paddingBottom: 30 }}>{JSON.stringify(data?.data, null, 2)}</Text> */}
         {isLoading && <ActivityIndicator />}
         {data?.status !== 'OK' && <Text>Order not found</Text>}
-        {data?.status === 'OK' && (
-          <>
-            <Image source={{ uri: da?.image }} style={styles.image} />
-            <Text>{da.name}</Text>
-            <Text>{da.price}</Text>
-          </>
-        )}
       </ScrollView>
-      <BottomNavi />
+      {data?.status === 'OK' &&
+        <FlatList
+          data={da}
+          renderItem={({ item }) => (
+            <>
+              <View style={styles.container1}>
+                <Image source={{ uri: item.product.image }} style={styles.image} />
+                <Text style={styles.text}>Name : {item.product.name}</Text>
+                <Text style={styles.text}>Price: {item.product.price}</Text>
+                <Text style={styles.text}>Qty  : {item.quantity}</Text>
+              </View>
+            </>
+          )}
+          numColumns={2}
+        />}
 
+      {/* <BottomNavi /> */}
       {/* <View style={styles.container}>
         <Image source={{ uri: data.data.image }} style={styles.image} />
 
@@ -53,6 +64,12 @@ const TrackOrder = () => {
 const styles = StyleSheet.create({
   root: {
     padding: 10,
+  },
+  container1: {
+    paddingBottom: 10,
+    alignItems: 'flex-start',
+    justifyContent: "center",
+    paddingTop: 2
   },
   input: {
     borderColor: 'lightgrey',
@@ -70,9 +87,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   image: {
-    width: '40%',
+    width: '50%',
     aspectRatio: 1,
-    margin: 15
+    margin: 15,
   },
   name: {
     fontWeight: '500',
@@ -82,6 +99,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
   },
+  text: {
+    paddingLeft: 14,
+    paddingBottom: 3
+  }
 });
 
 export default TrackOrder;

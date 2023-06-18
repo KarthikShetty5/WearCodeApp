@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderTopWidth: 1,
         borderTopColor: '#ccc',
+        position: 'relative',
     },
     tabItem: {
         flex: 1,

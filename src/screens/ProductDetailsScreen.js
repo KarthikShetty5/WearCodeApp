@@ -104,7 +104,7 @@ const ProductDetailsScreen = ({ route }) => {
           <Text style={styles.title}>{product.name}</Text>
 
           {/* Price */}
-          <Text style={styles.price}>₹ {product.price}</Text>
+          <Text style={styles.price}>₹{product.price}</Text>
 
           {/* size selector */}
           <View style={styles.group}>

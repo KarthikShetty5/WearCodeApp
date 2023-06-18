@@ -101,18 +101,17 @@ const Checkout = ({ route }) => {
 
     const onCreateOrder = async () => {
         const result = await createOrder({
-            items: {
-                0: { //i have done this to compromise my shopping cart 
-                    product: {
-                        "id": product._id,
-                        "image": product.image,
-                        "price": product.price,
-                        "name": product.name,
-                        "description": product.description,
-                        "size": size
-                    }
-                }
-            },
+            items: [{ //i have done this to compromise my shopping cart 
+                product: {
+                    "id": product._id,
+                    "image": product.image,
+                    "price": product.price,
+                    "name": product.name,
+                    "description": product.description,
+                    "size": size
+                }, quantity: 1
+            }
+            ],
             subtotal,
             deliveryFee,
             total,
