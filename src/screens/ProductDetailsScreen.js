@@ -20,6 +20,8 @@ import { useState } from 'react';
 import { TextInput } from 'react-native';
 import { Button } from 'react-native';
 import Footer from '../components/Footer';
+import Toast from 'react-native-toast-message';
+import { toast } from 'react-toastify';
 
 const CIRCLE_SIZE = 30;
 const CIRCLE_RING_SIZE = 2;
@@ -43,6 +45,15 @@ const ProductDetailsScreen = ({ route }) => {
 
   const [value, setValue] = useState(0);
   const [pin, setPin] = useState('')
+
+  const showToast = (text, color) => {
+    Toast.show({
+      type: `${color}`,
+      text1: `${text}`,
+      visibilityTime: 3000,
+    });
+  };
+
   // const sheet = React.useRef();
 
   // React.useEffect(() => {
@@ -69,9 +80,9 @@ const ProductDetailsScreen = ({ route }) => {
 
   const checkPin = () => {
     if (pin === '123456') {
-      console.log("Yes deliverable")
+      showToast("Yes !! serviceable", "success");
     } else {
-      console.log("No deliverable")
+      showToast("Nope !! not serviceable", "error");
     }
     setPin("")
   }
@@ -85,86 +96,89 @@ const ProductDetailsScreen = ({ route }) => {
   }
   // const product = products[0]
   return (
-    <View>
-      <ScrollView>
-        {/* it is added bcoz description gopes down and u cant see it and also the image to go up when we scroll it  , inorder to nsee we did */}
-        {/* Image Carousel */}
-        <FlatList
-          data={product.images}
-          renderItem={({ item }) => (
-            <Image source={{ uri: item }} style={{ width, aspectRatio: 1 }} />
-          )}
-          horizontal //we want view in horizontal mode so
-          showsHorizontalScrollIndicator={false} //it is used to remove scroll indicator
-          pagingEnabled //centers them and close images in center
-        />
+    <>
+      <View>
+        <ScrollView>
+          {/* it is added bcoz description gopes down and u cant see it and also the image to go up when we scroll it  , inorder to nsee we did */}
+          {/* Image Carousel */}
+          <FlatList
+            data={product.images}
+            renderItem={({ item }) => (
+              <Image source={{ uri: item }} style={{ width, aspectRatio: 1 }} />
+            )}
+            horizontal //we want view in horizontal mode so
+            showsHorizontalScrollIndicator={false} //it is used to remove scroll indicator
+            pagingEnabled //centers them and close images in center
+          />
 
-        <View style={{ padding: 20 }}>
-          {/* Title */}
-          <Text style={styles.title}>{product.name}</Text>
+          <View style={{ padding: 20 }}>
+            {/* Title */}
+            <Text style={styles.title}>{product.name}</Text>
 
-          {/* Price */}
-          <Text style={styles.price}>₹{product.price}</Text>
+            {/* Price */}
+            <Text style={styles.price}>₹{product.price}</Text>
 
-          {/* size selector */}
-          <View style={styles.group}>
-            {product.sizes.map((item) => {
-              const isActive = value === item;
-              return (
-                <View key={item}>
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      setValue(item);
-                    }}>
-                    <View
-                      style={[
-                        styles.circle,
-                        isActive && { borderColor: "black" },
-                      ]}>
-                      <Text
-                        style={[styles.circleInside, { backgroundColor: "pink" }]}
-                      >{item}</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              );
-            })}
+            {/* size selector */}
+            <View style={styles.group}>
+              {product.sizes.map((item) => {
+                const isActive = value === item;
+                return (
+                  <View key={item}>
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        setValue(item);
+                      }}>
+                      <View
+                        style={[
+                          styles.circle,
+                          isActive && { borderColor: "black" },
+                        ]}>
+                        <Text
+                          style={[styles.circleInside, { backgroundColor: "pink" }]}
+                        >{item}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
+                );
+              })}
+            </View>
+
+            <View style={styles.buttons}>
+              {/* Add to cart button */}
+              <TouchableOpacity onPress={addToCart} style={styles.button1}>
+                {/* it handles press events */}
+                <Text style={styles.buttonText} onPress={() => showToast("Added to cart", "success")}>Add to cart</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { navigation.navigate("Checkout", { id: id, size: value }) }} style={styles.button1}>
+                {/* it handles press events */}
+                <Text style={styles.buttonText}>Buy Now</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Pincode button */}
+            <Text style={styles.heading}>Check Delivery</Text>
+            <View style={styles.container1}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Pincode"
+                onChangeText={(text) => { setPin(text) }}
+                value={pin}
+              />
+              <TouchableOpacity onPress={() => { checkPin() }} style={styles.button}>
+                <Text style={styles.buttonText}>Check</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Description */}
+            <Text style={styles.description}>{product.description}</Text>
           </View>
+          <Footer />
+        </ScrollView>
 
-          <View style={styles.buttons}>
-            {/* Add to cart button */}
-            <TouchableOpacity onPress={addToCart} style={styles.button1}>
-              {/* it handles press events */}
-              <Text style={styles.buttonText}>Add to cart</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { navigation.navigate("Checkout", { id: id, size: value }) }} style={styles.button1}>
-              {/* it handles press events */}
-              <Text style={styles.buttonText}>Buy Now</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Pincode button */}
-          <Text style={styles.heading}>Check Delivery</Text>
-          <View style={styles.container1}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Pincode"
-              onChangeText={(text) => { setPin(text) }}
-              value={pin}
-            />
-            <TouchableOpacity onPress={() => { checkPin() }} style={styles.button}>
-              <Text style={styles.buttonText}>Check</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Description */}
-          <Text style={styles.description}>{product.description}</Text>
-        </View>
-        <Footer />
-      </ScrollView>
-
-      {/* Navigation icon */}
-    </View>
+        {/* Navigation icon */}
+      </View>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 };
 

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useGetUserQuery } from '../store/apiSlice';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import { Image } from 'react-native';
 
 
 const Forgot = () => {
@@ -29,28 +29,34 @@ const Forgot = () => {
             setExists(false);
         }
         setEmail("")
-        
         setTimeout(() => {
             navigation.navigate("Login")
         }, 1500)
         setTimeout(() => {
             setExists(false)
         }, 6000)
-
     }
 
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.heading}>Login</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                />
-                <TouchableOpacity style={styles.loginButton} onPress={() => submit()}>
-                    <Text style={styles.loginButtonText}>Submit</Text>
+                <View style={styles.logoContainer}>
+                    <Image
+                        source={require('../../assets/wearcode.jpg')}
+                        style={{ width: 100, height: 100, borderRadius: 400 / 2 }}
+                    />
+                </View>
+                <Text style={styles.heading}>Forgot Password</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                    />
+                </View>
+                <TouchableOpacity style={styles.loginButton} onPress={submit}>
+                    <Text style={styles.loginText}>Submit</Text>
                 </TouchableOpacity>
                 <Text>{exists ? <Text style={{ color: "green" }}>Email sent</Text> : <Text style={{ color: "red" }}>User dont exists</Text>}</Text>
             </View>
@@ -61,46 +67,54 @@ const Forgot = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        backgroundColor: '#3498db', // Background color
         justifyContent: 'center',
-        padding: 20,
+        alignItems: 'center',
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
+    logoContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 20,
     },
-    input: {
+    inputContainer: {
         width: '80%',
-        height: 40,
-        borderColor: '#000000',
-        borderWidth: 1,
-        marginBottom: 20,
-        borderRadius: 100,
-        paddingHorizontal: 10,
+    },
+
+    heading: {
+        fontWeight: '900',
+        fontSize: 24,
+        marginBottom: 28
+    },
+
+    text: {
+        color: 'red',
+        paddingRight: 160
+    },
+
+    text1: {
+        color: 'red',
+        paddingRight: 195,
+        paddingBottom: 20,
+        paddingTop: 10
+    },
+
+    input: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        marginBottom: 25,
+        paddingLeft: 10,
+        padding: 10,
     },
     loginButton: {
-        backgroundColor: '#FF0000',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 80,
+        backgroundColor: '#2980b9',
+        padding: 8,
+        borderRadius: 30,
+        width: '50%',
+        alignItems: 'center',
     },
-    text: {
-        fontSize: 13,
-        fontWeight: 'bold',
-        marginRight: 135,
-        marginBottom: 7
-    },
-    text1: {
-        fontSize: 13,
-        fontWeight: 'bold',
-        marginRight: 170,
-        marginBottom: 25
-    },
-    loginButtonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
+    loginText: {
+        color: 'white',
+        fontSize: 18,
     },
 });
 

@@ -4,17 +4,29 @@ import { Pressable, ScrollView, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native'
 import { View, Text } from 'react-native'
 import { useGetUserTokQuery } from '../store/apiSlice'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ActivityIndicator } from 'react-native'
+import * as SecureStore from 'expo-secure-store';
+import Toast from 'react-native-toast-message';
+import { toast } from 'react-toastify';
 
 const MyAccount = () => {
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState(null);
+
+    const showToast = (text, color) => {
+        Toast.show({
+            type: `${color}`,
+            text1: `${text}`,
+            visibilityTime: 4000,
+        });
+    };
     const getter = async () => {
         try {
-            val = await AsyncStorage.getItem('token')
+            val = await SecureStore.getItemAsync('token')
                 .then(val => {
                     if (val != null) {
                         setValue(val)
+                    } else {
+                        showToast("Please login", "info");
                     }
                 })
         } catch (err) {
@@ -29,11 +41,9 @@ const MyAccount = () => {
     }, [])
 
     const user = data?.data;
-    console.log(user?.token)
-
-    const [name, setName] = useState(user?.name);
+    console.log(user)
+    const [name, setName] = useState('');
     const [address, setAddress] = useState('');
-    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [city, setCity] = useState('');
     const [pincode, setPincode] = useState('')
@@ -42,6 +52,10 @@ const MyAccount = () => {
 
     return (
         <>
+            <View>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
+
+            </View>
             <ScrollView>
                 <View style={styles.container2}>
                     <Text style={styles.text}>My Account {isLoading && <ActivityIndicator />}</Text>
@@ -54,8 +68,7 @@ const MyAccount = () => {
                         />
                         <TextInput
                             style={styles.input1}
-                            value={email}
-                            onChangeText={(email) => setEmail(email)}
+                            value={user?.email}
                             placeholder="Email"
                         />
                     </View>

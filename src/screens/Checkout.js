@@ -14,6 +14,10 @@ import { useCreateOrderMutation, useCreatePaymentIntentMutation } from '../store
 import { useStripe } from '@stripe/stripe-react-native';
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store';
+import Toast from 'react-native-toast-message';
+import { toast } from 'react-toastify';
+
 import { useNavigation } from '@react-navigation/native'
 import pincode from '../../pincodes.json'
 
@@ -30,28 +34,26 @@ const Checkout = ({ route }) => {
         get();
     }, [])
 
+    const showToast = (text, color) => {
+        Toast.show({
+            type: `${color}`,
+            text1: `${text}`,
+            visibilityTime: 4000,
+        });
+    };
+
     const get = async () => {
         try {
-            val = await AsyncStorage.getItem('token')
+            val = await SecureStore.getItemAsync('token')
             value = val
-            console.log(`${value} hello checkout`)
             if (!value) {
                 navigation.navigate("Login")
-                console.log(`${value} hello login`)
             }
         } catch (err) {
             console.error(err);
         }
     }
 
-    useEffect(() => {
-        let pin = "123456"
-        if (1) {
-            console.log("ye karthik", pins)
-        } else {
-            console.log("noooo")
-        }
-    }, [])
 
     const dispatch = useDispatch();
     const [ref, setRef] = useState('');
@@ -140,10 +142,8 @@ const Checkout = ({ route }) => {
         });
 
         if (result.data?.status === 'OK') {
-            Alert.alert(
-                'Order has been submitted',
-                `Your order reference is: ${result.data.data.ref}`
-            );
+            showToast("Order has been submitted", "success");
+            showToast(`Your order reference is: ${result.data.data.ref}`, "info")
             dispatch(cartSlice.actions.clear());
             setName('');
             setEmail('');
@@ -152,6 +152,9 @@ const Checkout = ({ route }) => {
             setCity('');
             setState('');
             setPincode('')
+            setTimeout(() => {
+                navigation.navigate('Track Order');
+            }, 3000);
         }
     };
 
@@ -216,18 +219,28 @@ const Checkout = ({ route }) => {
                 <View>
                     <Text style={styles.text}>Review the items</Text>
                     <View style={styles.container1}>
+                        <Text style={{ marginLeft: 30 }}>Name</Text>
+                        <Text style={{ marginLeft: 26 }}>Image</Text>
+                        <Text style={{ marginLeft: 15 }}>Price</Text>
+                        <Text style={{ marginLeft: -10 }}>Size</Text>
+                    </View>
+                    <View style={styles.container1}>
+                        <Text style={{ marginLeft: 10 }}>______________________________________________________</Text>
+                    </View>
+                    <View style={styles.container1}>
                         <Text style={{ paddingLeft: 20 }}>{product.name}</Text>
                         <Image source={{ uri: product.image }} style={{ width: 70, aspectRatio: 1 }} />
                         <Text>{product.price}</Text>
                         <Text>{size}</Text>
                     </View>
                 </View>
-            </ScrollView>  
+            </ScrollView>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
             <Pressable onPress={() => { onCheckout() }} style={styles.button} disabled={(name && phone && email && address) ? false : true}>
-                <Text style={styles.buttonText}>
-                    {(name && phone && email && address) ? `Pay ${subt}` : "Fill Details"}
-                    {isLoading && <ActivityIndicator />}
-                </Text>
+                {
+                    !(name && phone && email && address) ? <Text style={styles.buttonText} onPress={() => showToast("Please fill details ...", "error")}>Pay</Text> :
+                        <Text style={styles.buttonText}>{isLoading && <ActivityIndicator />} Pay  ${subt}</Text>
+                }
             </Pressable>
         </>
     )

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useCreateUserMutation } from '../store/apiSlice';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
     const navigation = useNavigation();
@@ -10,6 +13,14 @@ const SignUp = () => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [createUser, { data, error, isLoading }] = useCreateUserMutation();
+
+    const showToast = (text, color) => {
+        Toast.show({
+            type: `${color}`,
+            text1: `${text}`,
+            visibilityTime: 4000,
+        });
+    };
 
     const submit = async () => {
         let tok = (Math.random() + 1).toString(36).substring(7)
@@ -22,15 +33,19 @@ const SignUp = () => {
         });
         console.log(result);
         if (result.data?.status === 'OK') {
-            Alert.alert(
-                'User Created',
-            );
+            showToast("Account created successfully", "success");
+        } else {
+            showToast("There was some error", "error");
         }
     }
 
     return (
         <>
             <View style={styles.container}>
+                <Image
+                    source={require('../../assets/wearcode.jpg')}
+                    style={{ width: 80, height: 80, borderRadius: 400 / 2 }}
+                />
                 <Text style={styles.heading}>SignIn</Text>
                 <TextInput
                     style={styles.input}
@@ -65,6 +80,7 @@ const SignUp = () => {
                         <Text style={styles.text}> have an Account ?</Text>
                     </TouchableOpacity>
                 </View>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
                 <TouchableOpacity style={styles.loginButton} onPress={submit}>
                     <Text style={styles.loginButtonText}>SignUp</Text>
                 </TouchableOpacity>
